@@ -1,0 +1,95 @@
+Readme file for Transat - a program for predicting evolutionarily conserved
+helices and their p-values for an input multiple sequence alignments and an
+input tree relating the sequences of the input alignment.
+
+Note: 
+----------------------------------------------------------------------
+
+The Transat package is copyrighted by Nicholas J. P. Wiebe (2008-2010) and
+Irmtraud M. Meyer (2008-2010), see also files LICENSE and COPYRIGHT for more
+details.
+
+Citations:
+----------------------------------------------------------------------
+
+If you use this package or parts of it, please cite:
+
+* Nicholas J. P. Wiebe and I.M.Meyer, Transat - a method for detecting the conserved helices of functional
+  RNA structures, including transient, pseudo-knotted and alternative
+  structures, PLoS Computational Biology (2010), 6(6): e1000823
+
+How to compile and run Transat:
+----------------------------------------------------------------------
+
+You will need to compile your own Transat executable as some features of
+Transat will be specific to your own computer and file system.
+
+(1) Transat requires the alignment shuffling perl script from RNAz. RNAz can be found at http://www.tbi.univie.ac.at/~wash/RNAz/
+    The script is called rnazRandomizeAln.pl. Download it.
+
+(2) Specify the location of the perl-script rnazRandomizeAln.pl in the makefile for Transat which is source/Transat/makefile
+    and set the value the RNAZ_SHUFFLER_LOC variable in the makefile to the appropriate location in your filesystem.  
+    We suggest you do this by specifying its entire path rather than by giving a relative location to the makefile. If you
+    plan to run Transat jobs on a different computer than the one used for compiling the Transat executable, make sure you choose a location 
+    for rnazRandomizeAln.pl which you can access when running jobs elsewhere.
+
+(3) Compile your own Transat executable by
+
+    - going to directory source/Transat/ 
+    - saying "make clean"
+    - saying "make all" which should result in an executable file called "Transat" being produced. This is the file for running
+      Transat analyses. 
+
+(4) optional: Install T-Coffee, if you want Transat to realign an input alignment before shuffling, and ensure that the command "t_coffee" is on your PATH.
+    Type "which t_coffee" in a shell to check this is the case.
+
+(5) Running Transat jobs:
+
+    two types of command line structure:
+
+    Transat -fasta <fasta alignment file> -ct <consensus structure .ct file> -tree <tree in newick format>
+    Transat -fasta <fasta alignment file, with last entry as the structure in dot-bracket notation> -tree <tree in newick format>
+
+    options:
+
+    -fasta [filename] : file containing alignment, in aligned fasta format, with the last entry as the structure in dot-bracket notation (with allowed brackets '()', '[]', '<>', "Aa", and "Bb") unless the option -ct is used
+    -ct [filename] : ct-like input file containing known structure. If a ct file not specified, then Transat will assume that the last line of the alignment file contains 
+     the structure in dot-bracket notation.
+    -tree [filename] : file containing phylogenetic tree in newick format.
+    -minSL [int] : sets the minimum helix length. Only competing helices with a length greater than this value will be stored (default: 8, but the Transat paper uses 3)
+    -randomize [int] : sets the number of shuffled alignments are used in the null distributions (default = 500)
+    -realign : if this flag is present, Transat does a realignment step before producing a shuffled alignments. Uses t_coffee for realignment step (t_coffee must be on PATH!)
+    -noDB : if this flag is present, Transat will not print the dot-bracket structure of each helix to the output file.
+    -noStruct : use this flag if you would like to run Transat without specifying a known structure for the alignment. -ct overrides this flag.
+
+    See the sub-directory "examples" for examples on how to run Transat jobs.
+
+(6) Analyzing the Transat output:
+
+    - the output file of Transat is a data table with an entry line for every predicted helix in the alignment
+    - all helices in that table are unique
+    - the header lines of the different columns in that table are relatively self-explanatory. As you will see, some columns contain information on the predicted helix that is
+      relative to whatever input RNA structure was specified up-front (but Transat does not require or use any structural features known up-front to generate its predictions)
+    - the p-values are calculated by shuffling the entire alignment and finding all helices as described in the Transat paper.
+    
+Information
+----------------------------------------------------------------------
+
+More information on Transat can be found 
+
+- on the web-page people.cs.ubc.ca/~irmtraud/transat
+
+Contact
+
+- irmtraud.meyer@cantab.net
+
+Examples
+----------------------------------------------------------------------
+
+The sub-directory "examples" contains several examples as well as a readme
+file explaing how to run Transat jobs for these examples.
+
+History:
+----------------------------------------------------------------------
+
+November 2009 - release of Transat version 1.0

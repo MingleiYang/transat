@@ -1,0 +1,30 @@
+Three examples on how to run Transat:
+
+(1) example: structure known (in separate ct input file)
+
+E_coli_RNaseP_high.fasta_al	- input file with multiple sequence alignment in fasta format
+E_coli_RNaseP_high.fixtree	- input file with evolutionary tree
+E_coli_RNaseP_high.ct.fix       - input file with known structure in ct-like format for one of the gapped sequence in the multiple-sequence alignment 
+
+command line for running transat:
+
+Transat -fasta E_coli_RNaseP_high.fasta_al -tree E_coli_RNaseP_high.fixtree -ct E_coli_RNaseP_high.ct.fix -randomize 100 -minSL 3 -realign
+
+(2) example: no structure known
+
+Transat -fasta E_coli_RNaseP_high.fasta_al -tree E_coli_RNaseP_high.fixtree -randomize 100 -minSL 3 -noStruct -realign
+
+When no structure is known up-front, the columns of the output file which contain predicted information with respect to a known structure will all contains 0s.
+
+(3) example: structure known (part of fasta_al input file)
+
+RF00168.fasta_al - input file with multiple sequence alignment and known structure in dot-bracket format (with allowed brackets '()', '[]', '<>', "Aa", and "Bb")
+RF00168.fixtree	 - input file with evolutionary tree in newick format
+
+command line for running transat:
+
+Transat -fasta RF00168.fasta_al -tree RF00168.fixtree -randomize 100 -minSL 3 -realign
+
+NOTE: running Transat with these example files will produce a "input tree not a
+binary tree. Binary-izing by adding epsilon-length branches" warning which can
+be ignored.
